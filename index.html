@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <style>
+        @import url('http://fonts.googleapis.com/css?family=Open+Sans:400,600,700');
+
+        body {
+            margin: 0;
+        }
+
+        .topnav {
+            overflow: hidden;
+            background-color: lightslategray;
+        }
+
+        .logo {
+            display: inline-block;
+            width: 120px;
+            float: left;
+            padding-left: 5%;
+        }
+
+        .nav-title {
+            text-align: center;
+            width: 60%;
+            display: inline-block;
+        }
+
+
+        .dropdown {
+            float: right;
+            overflow: hidden;
+            display: inline-block;
+
+        }
+
+        .caret {
+            width: 20px;
+            vertical-align: middle;
+        }
+
+
+        .dropdown .dropbtn {
+            font-size: 16px;
+            border: none;
+            outline: none;
+            color: white;
+            padding: 16px 14px;
+            margin: 0;
+            background-color: transparent;
+        }
+
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f9f9f9;
+            min-width: 183px;
+            box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+            z-index: 1;
+        }
+
+        .dropdown-content a {
+            float: none;
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            text-align: left;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #ddd;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        .user-icon {
+            padding: 11px 6px;
+            line-height: normal;
+            text-align: center;
+            background-color: transparent;
+            border: 0;
+            border-radius: 0;
+            position: relative;
+        }
+
+        .user-name {
+            padding-left: 5px;
+        }
+
+        .user-icon img {
+            width: auto;
+            vertical-align: middle;
+        }
+
+        .user-icon::before {
+            position: absolute;
+            content: '';
+            height: 80%;
+            width: 1px;
+            right: 0;
+            top: 7%;
+            background: #333;
+
+        }
+
+        .search-icon {
+            vertical-align: middle;
+            width: 25px;
+        }
+
+
+
+        .search-container input[type=text] {
+            padding: 6px;
+            padding-right: 0px;
+            margin-top: 8px;
+            font-size: 17px;
+            border: 1px solid black;
+        }
+
+        .search-container .submit {
+            padding: 5px 7px;
+            margin-top: 7px;
+            margin-right: 16px;
+            background: #ddd;
+            font-size: 17px;
+            border: none;
+            cursor: pointer;
+            position: absolute;
+        }
+
+        .btn-tag {
+            padding: 8px 11px;
+            margin-top: 7px;
+            margin-right: -3px;
+            background: #ddd;
+            font-size: 17px;
+            border: none;
+            cursor: pointer;
+            display: inline-block;
+        }
+
+
+
+        /* *, *:before, *:after {margin: 0; padding: 0; box-sizing: border-box;} */
+
+        /* h1 {padding: 100px 0; font-weight: 400; text-align: center;}
+         p {margin: 0 0 20px; line-height: 1.5;} */
+
+        .main {
+            padding: 0 5%;
+        }
+
+        .tab-navigation .content {
+            background: #fff;
+            color: #373737;
+        }
+
+        .tab-navigation .content>div {
+            display: none;
+            /* padding: 20px 25px 5px; */
+            border: 1px solid #c4c4c4;
+        }
+
+        .tab-navigation input {
+            display: none;
+        }
+
+        .tab-navigation label {
+            display: inline-block;
+            background: #f4f4f4;
+            padding: 15px 25px;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .tab-navigation label:hover {
+            color: #444;
+            cursor: pointer;
+        }
+
+        .tab-navigation input:checked+label {
+            background: #ddd2dd;
+            color: #444;
+        }
+
+        #tab1:checked~.content #content1,
+        #tab2:checked~.content #content2 {
+            display: block;
+        }
+
+
+
+        table {
+            font-family: arial, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        td,
+        th {
+            border: 0.1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        tr:nth-child(even) {
+            background-color: #dddddd;
+        }
+
+        .accordion {
+            background-color: #eee;
+            color: #444;
+            cursor: pointer;
+            padding: 18px;
+            width: 100%;
+            border: none;
+            text-align: left;
+            outline: none;
+            font-size: 15px;
+            transition: 0.4s;
+            background: #eee url(./caret.png) no-repeat scroll 98% center;
+            background-size: 30px;
+        }
+
+        .accordion .active,
+        .accordion:hover {
+            background-color: #ccc;
+        }
+
+        .panel {
+            /* padding: 0 18px; */
+            display: none;
+            background-color: white;
+            overflow: hidden;
+        }
+
+        table .container {
+            display: block;
+            position: relative;
+            padding-left: 35px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            font-size: 22px;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            background: transparent;
+        }
+
+        /* Hide the browser's default checkbox */
+
+        table .container input {
+            position: absolute;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        /* Create a custom checkbox */
+
+        table .checkmark {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 25px;
+            width: 25px;
+            background-color: #eee;
+        }
+
+        /* On mouse-over, add a grey background color */
+
+        table .container:hover input~.checkmark {
+            background-color: #ccc;
+        }
+
+        /* When the checkbox is checked, add a blue background */
+
+        table .container input:checked~.checkmark {
+            background-color: #2196F3;
+        }
+
+        /* Create the checkmark/indicator (hidden when not checked) */
+
+        table .checkmark:after {
+            content: "";
+            position: absolute;
+            display: none;
+        }
+
+        /* Show the checkmark when checked */
+
+        table .container input:checked~.checkmark:after {
+            display: block;
+        }
+
+        /* Style the checkmark/indicator */
+
+        table .container .checkmark:after {
+            left: 9px;
+            top: 5px;
+            width: 5px;
+            height: 10px;
+            border: solid white;
+            border-width: 0 3px 3px 0;
+            -webkit-transform: rotate(45deg);
+            -ms-transform: rotate(45deg);
+            transform: rotate(45deg);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="topnav" id="topnav">
+        <div class="logo">
+            <h2 style="color:white">logo</h2>
+        </div>
+        <div class="nav-title">
+            <h3 style="color:white">some text</h3>
+        </div>
+        <div class="dropdown">
+            <button class="dropbtn">
+                <span class="user-icon">
+                    <img alt="users" src="user.png" />
+                </span>
+                <span class="user-name">Username</span>
+                <img class="caret" src="caret.png" />
+            </button>
+            <div class="dropdown-content">
+                <a href="#">Link 1</a>
+                <a href="#">Link 2</a>
+                <a href="#">Link 3</a>
+            </div>
+        </div>
+    </div>
+    <div class="full-text">
+        <h2 style="padding-left:5%">SOme text</h2>
+    </div>
+    <center>
+        <div class="search-container">
+            <form action="/action_page.php">
+                <div class="btn-tag">TEXT</div>
+                <input type="text" placeholder="Search.." name="search">
+                <button class="submit" type="submit">
+                    <img class="search-icon" src="search.png" />
+                </button>
+            </form>
+        </div>
+    </center>
+    <div class="simple-text">
+        some text goes here
+    </div>
+    <div class="tab-navigation">
+        <div class="main">
+
+            <input id="tab1" type="radio" name="tabs" checked>
+            <label for="tab1">New York</label>
+
+            <input id="tab2" type="radio" name="tabs">
+            <label for="tab2">London</label>
+
+
+            <div class="content">
+                <div id="content1">
+
+                    <button class="accordion">Section 1</button>
+                    <div class="panel">
+                        <table>
+                            <tr>
+                                <th> </th>
+                                <th>Contact</th>
+                                <th>Country</th>
+                                <th>Country</th>
+                                <th>Country</th>
+                                <th>Country</th>
+                                <th>Country</th>
+                                <th>Country</th>
+                                <th>Country</th>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label class="container">
+                                        <input type="checkbox" checked="checked">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                </td>
+                                <td>Maria Anders</td>
+                                <td>Germany</td>
+                                <td>Germany</td>
+                                <td>Germany</td>
+                                <td>Germany</td>
+                                <td>Germany</td>
+                                <td>Germany</td>
+                                <td>Germany</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label class="container">
+                                        <input type="checkbox" checked="checked">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                </td>
+                                <td>Francisco Chang</td>
+                                <td>Mexico</td>
+                                <td>Germany</td>
+                                <td>Germany</td>
+                                <td>Germany</td>
+                                <td>Germany</td>
+                                <td>Germany</td>
+                                <td>Germany</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                        <label class="container">
+                                                <input type="checkbox" checked="checked">
+                                                <span class="checkmark"></span>
+                                            </label>
+                                </td>
+                                <td>Roland Mendel</td>
+                                <td>Austria</td>
+                                <td>Germany</td>
+                                <td>Germany</td>
+                                <td>Germany</td>
+                                <td>Germany</td>
+                                <td>Germany</td>
+                                <td>Germany</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                        <label class="container">
+                                                <input type="checkbox" checked="checked">
+                                                <span class="checkmark"></span>
+                                            </label>
+                                </td>
+                                <td>Helen Bennett</td>
+                                <td>Germany</td>
+                                <td>Germany</td>
+                                <td>Germany</td>
+                                <td>Germany</td>
+                                <td>Germany</td>
+                                <td>Germany</td>
+                                <td>UK</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                        <label class="container">
+                                                <input type="checkbox" checked="checked">
+                                                <span class="checkmark"></span>
+                                            </label>
+                                </td>
+                                <td>Yoshi Tannamuri</td>
+                                <td>Canada</td>
+                                <td>Germany</td>
+                                <td>Germany</td>
+                                <td>Germany</td>
+                                <td>Germany</td>
+                                <td>Germany</td>
+                                <td>Germany</td>
+
+                            </tr>
+                            <tr>
+                                <td>
+                                        <label class="container">
+                                                <input type="checkbox" checked="checked">
+                                                <span class="checkmark"></span>
+                                            </label>
+                                </td>
+                                <td>Giovanni Rovelli</td>
+                                <td>Italy</td>
+                                <td>Germany</td>
+                                <td>Germany</td>
+                                <td>Germany</td>
+                                <td>Germany</td>
+                                <td>Germany</td>
+                                <td>Germany</td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <button class="accordion">Section 2</button>
+                    <div class="panel">
+                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore
+                            et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi
+                            ut aliquip ex ea commodo consequat.</p>
+                    </div>
+
+                    <button class="accordion">Section 3</button>
+                    <div class="panel">
+                        <table>
+                            <tr>
+                                <th>Company</th>
+                                <th>Contact</th>
+                                <th>Country</th>
+                                <th>Country</th>
+                                <th>Country</th>
+                                <th>Country</th>
+                                <th>Country</th>
+                                <th>Country</th>
+                                <th>Country</th>
+                            </tr>
+                            <tr>
+                                <td>Alfreds Futterkiste</td>
+                                <td>Maria Anders</td>
+                                <td>Germany</td>
+                                <td>Germany</td>
+                                <td>Germany</td>
+                                <td>Germany</td>
+                                <td>Germany</td>
+                                <td>Germany</td>
+                                <td>Germany</td>
+                            </tr>
+                            <tr>
+                                <td>Centro comercial Moctezuma</td>
+                                <td>Francisco Chang</td>
+                                <td>Mexico</td>
+                                <td>Germany</td>
+                                <td>Germany</td>
+                                <td>Germany</td>
+                                <td>Germany</td>
+                                <td>Germany</td>
+                                <td>Germany</td>
+                            </tr>
+                            <tr>
+                                <td>Ernst Handel</td>
+                                <td>Roland Mendel</td>
+                                <td>Austria</td>
+                                <td>Germany</td>
+                                <td>Germany</td>
+                                <td>Germany</td>
+                                <td>Germany</td>
+                                <td>Germany</td>
+                                <td>Germany</td>
+                            </tr>
+                            <tr>
+                                <td>Island Trading</td>
+                                <td>Helen Bennett</td>
+                                <td>Germany</td>
+                                <td>Germany</td>
+                                <td>Germany</td>
+                                <td>Germany</td>
+                                <td>Germany</td>
+                                <td>Germany</td>
+                                <td>UK</td>
+                            </tr>
+                            <tr>
+                                <td>Laughing Bacchus Winecellars</td>
+                                <td>Yoshi Tannamuri</td>
+                                <td>Canada</td>
+                                <td>Germany</td>
+                                <td>Germany</td>
+                                <td>Germany</td>
+                                <td>Germany</td>
+                                <td>Germany</td>
+                                <td>Germany</td>
+
+                            </tr>
+                            <tr>
+                                <td>Magazzini Alimentari Riuniti</td>
+                                <td>Giovanni Rovelli</td>
+                                <td>Italy</td>
+                                <td>Germany</td>
+                                <td>Germany</td>
+                                <td>Germany</td>
+                                <td>Germany</td>
+                                <td>Germany</td>
+                                <td>Germany</td>
+                            </tr>
+                        </table>
+                    </div>
+
+
+
+                </div>
+
+                <div id="content2">
+                    <p>
+                        London is the capital city of England and the United Kingdom. It is the most populous city in the United Kingdom, with a
+                        metropolitan area of over 13 million inhabitants. Standing on the River Thames, London has been a
+                        major settlement for two millennia, its history going back to its founding by the Romans, who named
+                        it Londinium.
+                    </p>
+                    <p>
+                        London's ancient core, the City of London, largely retains its 1.12-square-mile (2.9 km2) mediaeval boundaries and in 2011
+                        had a resident population of 7,375, making it the smallest city in England. Since at least the 19th
+                        century, the term London has also referred to the metropolis developed around this core.
+                    </p>
+                </div>
+
+
+            </div>
+
+        </div>
+    </div>
+</body>
+<script>
+    var acc = document.getElementsByClassName("accordion");
+    var i;
+
+    for (i = 0; i < acc.length; i++) {
+        acc[i].addEventListener("click", function () {
+            this.classList.toggle("active");
+            var panel = this.nextElementSibling;
+            if (panel.style.display === "block") {
+                panel.style.display = "none";
+            } else {
+                panel.style.display = "block";
+            }
+        });
+    }
+</script>
+
+</html>
